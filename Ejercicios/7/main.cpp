@@ -4,18 +4,9 @@
  * ---------------------------------------------------
  */
 
-/*
- * MUY IMPORTANTE: Para realizar este ejercicio solo podéis
- * modificar el código contenido entre las etiquetas <answer>
- * y </answer>. Toda modificación fuera de esas etiquetas está
- * prohibida, pues no será corregida.
- *
- * Tampoco esta permitido modificar las líneas que contienen
- * las etiquetas <answer> y </answer>, obviamente :-)
- */
-
 /*@ <answer>
  * Nombre y Apellidos:
+ * Mario Calvarro Marines
  *@ </answer> */
 
 /*
@@ -213,8 +204,14 @@ void ListLinkedSingle::display(std::ostream &out) const {
  */
 
 void ListLinkedSingle::nuevo() {
-   
-  
+   if (head != nullptr) {
+      Node *prev = nullptr, *current = head, *next = head->next;
+      while (next != nullptr) {
+         current->next = prev;
+         prev = current; current = next; next = next->next;
+      }
+      current->next = prev; head = current;
+   }
 }
 
 using namespace std;
@@ -244,7 +241,7 @@ void resuelveCaso() {
 
 int main() {
 #ifndef DOMJUDGE
-   std::ifstream in("casos.txt");
+   std::ifstream in("../casos.txt");
    auto cinbuf = std::cin.rdbuf(in.rdbuf());
 #endif
    
@@ -256,8 +253,6 @@ int main() {
    
 #ifndef DOMJUDGE
    std::cin.rdbuf(cinbuf);
-   // Descomentar si se trabaja en Visual Studio
-   // system("PAUSE");
 #endif
    
    return 0;
