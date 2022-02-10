@@ -37,6 +37,9 @@
 !/**/
 !*.*
 
+# VScode files
+.vscode/*
+
 # Template files
 1.NumeroCasos.cpp
 2.Centinela.cpp
