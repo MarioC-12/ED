@@ -19,6 +19,7 @@
  * Introduce el nombre y apellidos de los/as componentes del grupo:
  *
  * Mario Calvarro Marines
+ * Daniel Ramos Rodríguez
  *
  */
 //@ </answer>
@@ -213,8 +214,40 @@ void ListLinkedSingle::display(std::ostream &out) const {
 
 void ListLinkedSingle::intersect(const ListLinkedSingle &other) {
   // Completar aquí
+  Node* thisNode{head};
+  Node* lastMatch{nullptr};
+  Node* otherNode{other.head};
+  while(thisNode != nullptr && otherNode != nullptr) {
+    if(thisNode->value == otherNode->value) {
+      lastMatch = thisNode;
+      thisNode = thisNode->next;
+      otherNode = otherNode->next;
+    }
+    else if(thisNode->value < otherNode->value) {
+      Node* temp{thisNode->next};
+      if(head == thisNode) {
+        head = temp;
+      }
+      else {
+        lastMatch->next = temp;
+      }
+      delete thisNode;
+      thisNode = temp;
+    }
+    else {
+      otherNode = otherNode->next;
+    }
+  }
 
-  
+  if(thisNode != nullptr) {
+    if(head == thisNode) {
+      head = nullptr;
+    }
+    else {
+      lastMatch->next = nullptr;
+    }
+    delete_list(thisNode);
+  } 
 }
 
 //@ </answer>
