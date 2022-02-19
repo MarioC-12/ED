@@ -38,7 +38,8 @@
 !*.*
 
 # VScode files
-.vscode/*
+launch.json
+tasks.json
 
 # Template files
 1.NumeroCasos.cpp
