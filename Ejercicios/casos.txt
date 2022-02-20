@@ -1,6 +1,5 @@
-Hola, me llamo Jose (Pepe para los amigos).
-
-Yo soy Francisco (o Paco]
-{((()))}[]
-][
-[([])]()
+10 2
+7 1
+4 3
+4 4
+0 0
