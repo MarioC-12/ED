@@ -14,9 +14,18 @@
 
 /*@ <answer>
   
- Escribe aquí un comentario general sobre la solución, explicando cómo
- se resuelve el problema y cuál es el coste de la solución, en función
- del tamaño del problema.
+  Para la primera transformación (primero -> ultimo -> segundo...) almacenamos los 
+  caracteres de posiciones pares (empezando en 0) en una cola mientras que las 
+  posiciones impares irán a una pila. Una vez se hayan recorrido todas las letras
+  volcamos la pila en la cola y devolvemos dicha cola.
+
+  En el caso de la segunda transformación, simplemente creamos una cola que será la solución.
+  A su vez, crearemos una pila donde se irán almacenando las constantes consecutivas. En el caso 
+  de que aparezca una vocal, volcaremos la pila de consonantes en la cola y, tras esto, incluiremos 
+  la vocal. En el caso de que tras recorrer todas las letras, la pila siga con algún elemento
+  la volveremos a volcar y la devolveremos. 
+  El coste de esta función es lineal de forma amortizada porque las operaciones de la pila son 
+  simplemente la de entrada y salida, de la pila, por lo que sería 2n.
  
  @ </answer> */
 
@@ -26,16 +35,17 @@
 // ================================================================
 //@ <answer>
 
-std::string resolver1(const std::string& entrada) {
-    std::string sol;
+//Coste amortizado lineal
+void resolver1(std::string& entrada) {
+    std::queue<char> sol;
     std::stack<char> pila;
     for (char aux: entrada) {
         if (std::tolower(aux) == 'a' || std::tolower(aux) == 'e' || std::tolower(aux) == 'i' || std::tolower(aux) == 'o' || std::tolower(aux) == 'u') {
             while (!pila.empty()) {
-                sol.push_back(pila.top()); 
+                sol.push(pila.top()); 
                 pila.pop();
             }
-            sol.push_back(aux);
+            sol.push(aux);
         }
         else {
             pila.push(aux);
@@ -43,17 +53,35 @@ std::string resolver1(const std::string& entrada) {
     }
 
     while (!pila.empty()) {
-        sol.push_back(pila.top());
-        pila.top();
+        sol.push(pila.top());
+        pila.pop();
     }
 
-    return entrada;
+    size_t i = 0;
+    while (!sol.empty()) {
+        entrada[i] = sol.front(); sol.pop();
+        ++i;
+    }
 }
 
+// Coste lineal sobre el número de caracteres de entrada 
 void resolver2(std::string& entrada) {
+    std::queue<char> primeros;
+    std::stack<char> ultimos;
     for (size_t i = 0; i < entrada.size(); ++i) {
-        if (i % 2 == 0) entrada[i] = entrada[i / 2];
-        else entrada[i] = entrada[entrada.size() - i / 2];
+        if (i % 2 == 0) primeros.push(entrada[i]);
+        else ultimos.push(entrada[i]);
+    }
+
+    while (!ultimos.empty()) {
+        primeros.push(ultimos.top());
+        ultimos.pop();
+    }
+
+    size_t i = 0;
+    while (!primeros.empty()) {
+        entrada[i] = primeros.front(); primeros.pop();
+        ++i;
     }
 }
 
@@ -67,7 +95,7 @@ bool resuelveCaso() {
    
     // resolver el caso posiblemente llamando a otras funciones
     resolver2(entrada);
-    // entrada = resolver1(entrada);
+    resolver1(entrada);
 
     // escribir la solución
     std::cout << entrada << '\n';
@@ -93,3 +121,4 @@ int main() {
 #endif
    return 0;
 }
+//Coste amortizado lineal
