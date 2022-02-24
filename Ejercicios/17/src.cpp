@@ -27,6 +27,12 @@
 //@ <answer>
 
 bool resolver(const std::vector<size_t>& alturas) {
+    std::deque<size_t> colaDoble;
+    for (size_t i: alturas) {
+        colaDoble.push_back(i);
+    }
+
+    return false;
 }
 
 bool resuelveCaso() {
