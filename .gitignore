@@ -45,3 +45,6 @@ tasks.json
 1.NumeroCasos.cpp
 2.Centinela.cpp
 3.CasosIlimitados.cpp
+
+# ZIPs
+*.zip
