@@ -14,10 +14,15 @@
 
 /*@ <answer>
   
- Escribe aquí un comentario general sobre la solución, explicando cómo
- se resuelve el problema y cuál es el coste de la solución, en función
- del tamaño del problema.
- 
+    Las alturas se introducen en una pila e iteramos. 
+    Según avanzamos vamos manteniendo el "mejor" mediano 
+    que será el que tenga el valor máximo. Si encontramos 
+    un valor que tenga un valor inferior al de la derecha 
+    y tal que el mediano sea superior a los dos será posible 
+    que se encuentre una solución
+    Si el mediano no es el máximo cambiamos el de la derecha 
+    al nuevo.
+
  @ </answer> */
 
 
@@ -26,13 +31,23 @@
 // ================================================================
 //@ <answer>
 
-bool resolver(const std::vector<size_t>& alturas) {
-    std::deque<size_t> colaDoble;
-    for (size_t i: alturas) {
-        colaDoble.push_back(i);
+//Devuelve si es posible encontrar un conjunto que impida "tener premio"
+//Lineal sobre el número de elementos de la cola doble
+bool resolver(std::stack<size_t>& alturas) {
+    size_t der = alturas.top();
+    size_t med = der; alturas.pop();
+    bool sol = false;
+    while (!sol && !alturas.empty()) {
+        if (alturas.top() > med) {
+            med = alturas.top();
+        }
+        else if (alturas.top() < der && med > der) {
+            sol = true;
+        }
+        alturas.pop();
     }
 
-    return false;
+    return sol;
 }
 
 bool resuelveCaso() {
@@ -43,16 +58,18 @@ bool resuelveCaso() {
     if (!std::cin)  // fin de la entrada
         return false;
     
-    std::vector<size_t> alturas (num);
-    for (size_t& i: alturas) {
-        std::cin >> i;
+    std::stack<size_t> alturas;
+    size_t aux;
+    for (size_t i = 0; i < num; ++i) {
+        std::cin >> aux;
+        alturas.push(aux);
     }
 
     // resolver el caso posiblemente llamando a otras funciones
     bool sol = resolver(alturas);
 
     // escribir la solución
-    std::cout << (sol? "SIEMPRE PREMIO" : "ELEGIR OTRA") << '\n'; 
+    std::cout << (!sol? "SIEMPRE PREMIO" : "ELEGIR OTRA") << '\n'; 
 
     return true;
 }
