@@ -48,3 +48,6 @@ tasks.json
 
 # ZIPs
 *.zip
+
+# Casos
+./Ejercicios/casos.txt
