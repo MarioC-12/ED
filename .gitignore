@@ -50,4 +50,4 @@ tasks.json
 *.zip
 
 # Casos
-./Ejercicios/casos.txt
+Ejercicios/casos.txt
