@@ -129,25 +129,41 @@ using namespace std;
 // Modificar a partir de aquí
 // --------------------------------------------------------------
 template <typename T>
-std::tuple<bool, bool, size_t> estable_altura(BinTree<T> arbol) {
+std::tuple<bool, bool, size_t> estable_altura(const BinTree<T> &arbol) {
     if (arbol.empty()) {
-        return {true, 0};
+        return {true, false, 0};
     }
     else { 
-        auto [estable_left, pierdeAlt_left, altura_left] = estable_altura(arbol.left());
-        auto [estable_right, pierdeAlt_right, altura_right] = estable_altura(arbol.right());
+        auto [estableL, pierdeAltL, altL] = estable_altura(arbol.left());
+        auto [estableR, pierdeAltR, altR] = estable_altura(arbol.right());
 
-        size_t altMin = std::min(altura_left, altura_right);
-        size_t altMax = std::max(altura_left, altura_right);
-        bool estable = estable_left && estable_right && 
-            (altMax - altMin) <= 1 && 
-        return {estable, altMax + 1}; 
+        bool pierdeAltMax = false; 
+        bool pierdeAltMin = false;
+        if (altL > altR) { 
+            pierdeAltMax = pierdeAltL;
+            pierdeAltMin = pierdeAltL;
+        }
+        else if (altL < altR) { 
+            pierdeAltMax = pierdeAltR;
+            pierdeAltMin = pierdeAltR;
+        }
+
+        bool pierdeAlt = (altL == 1 && altR == 0) || (altL == 0 && altR == 1) || 
+            pierdeAltMax;
+
+        size_t altMax = std::max(altL, altR);
+        size_t altMin = std::min(altL, altR);
+        bool estable = estableL && estableR && 
+            ((pierdeAltMin && (altMax - altMin < 1)) || (!pierdeAltMin && (altMax - altMin <= 1)));
+
+        size_t alt = std::max(altL, altR) + 1;
+        return {estable, pierdeAlt, alt};
     }
 }
 
 template <typename T>
 bool estable(const BinTree<T> &arbol) {
-    auto [sol, aux] = estable_altura(arbol);
+    auto [sol, aux, aux2] = estable_altura(arbol);
     return sol; 
 }
 
