@@ -139,17 +139,20 @@ std::tuple<bool, bool, size_t> estable_altura(const BinTree<T> &arbol) {
 
         bool pierdeAltMax = false; 
         bool pierdeAltMin = false;
+        bool pierdeAlt = false;
         if (altL > altR) { 
             pierdeAltMax = pierdeAltL;
-            pierdeAltMin = pierdeAltL;
+            pierdeAltMin = pierdeAltR;
+            pierdeAlt = true;
         }
         else if (altL < altR) { 
             pierdeAltMax = pierdeAltR;
-            pierdeAltMin = pierdeAltR;
+            pierdeAltMin = pierdeAltL;
+            pierdeAlt = true;
         }
-
-        bool pierdeAlt = (altL == 1 && altR == 0) || (altL == 0 && altR == 1) || 
-            pierdeAltMax;
+        else if (altL == 0 && altR == 0) {
+            pierdeAlt = true;
+        }
 
         size_t altMax = std::max(altL, altR);
         size_t altMin = std::min(altL, altR);

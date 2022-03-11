@@ -255,21 +255,23 @@ std::ostream &operator<<(std::ostream &out, const ListLinkedDouble<T> &l) {
 
 class Persona {
 public: 
+    Persona() {}
     Persona(const std::string &nombre, const size_t edad): nombre(nombre), edad(edad) {}
-    std::string getNombre() { return nombre; }
-    size_t getEdad() { return edad; }
+    std::string getNombre() const { return nombre; }
+    size_t getEdad() const { return edad; }
 
 private: 
     std::string nombre;
     size_t edad;
 };
 
+template <typename T>
 template <typename Predicate>
-void remove_if(Predicate pred) {
-    auto it = this->begin();
-    while (it != this->end()) {
+void ListLinkedDouble<T>::remove_if(Predicate pred) {
+    auto it = begin();
+    while (it != end()) {
         if (pred(*it)) {
-            it = this->erase(it);
+            it = erase(it);
         }
         else {
             ++it;
@@ -290,12 +292,12 @@ bool resuelveCaso() {
     std::string auxNombre;
     size_t auxEdad;
     for (size_t i = 0; i < numInscritos; ++i) {
-        std::cin >> auxEdad >> auxNombre;
-        lista.push_back(Persona {auxNombre, auxEdad});
+        std::cin >> auxEdad >> auxNombre; 
+        lista.push_back({auxNombre, auxEdad});
     }    
 
     // resolver el caso posiblemente llamando a otras funciones
-    lista.remove_if([const size_t edadMin, const size_t edadMax] (const Persona &p) {
+    lista.remove_if([edadMin, edadMax] (const Persona &p) {
                return (p.getEdad() >= edadMin && p.getEdad() <= edadMax); 
             });
 
