@@ -270,7 +270,7 @@ template <typename Predicate>
 void ListLinkedDouble<T>::remove_if(Predicate pred) {
     auto it = begin();
     while (it != end()) {
-        if (pred(*it)) {
+        if (!pred(*it)) {
             it = erase(it);
         }
         else {
@@ -284,15 +284,17 @@ bool resuelveCaso() {
     size_t numInscritos, edadMin, edadMax;
     std::cin >> numInscritos >> edadMin >> edadMax;
 
-    if (numInscritos == 0 || edadMin == 0 || edadMax == 0)
+    if (numInscritos == 0 && edadMin == 0 && edadMax == 0)
         return false;
 
     ListLinkedDouble<Persona> lista;
 
     std::string auxNombre;
-    size_t auxEdad;
+    size_t auxEdad; char auxChar;
     for (size_t i = 0; i < numInscritos; ++i) {
-        std::cin >> auxEdad >> auxNombre; 
+        std::cin >> auxEdad;
+        std::cin.get(auxChar);
+        std::getline(std::cin, auxNombre);
         lista.push_back({auxNombre, auxEdad});
     }    
 
