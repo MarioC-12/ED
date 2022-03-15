@@ -270,7 +270,7 @@ template <typename Predicate>
 void ListLinkedDouble<T>::remove_if(Predicate pred) {
     auto it = begin();
     while (it != end()) {
-        if (!pred(*it)) {
+        if (pred(*it)) {
             it = erase(it);
         }
         else {
@@ -300,7 +300,7 @@ bool resuelveCaso() {
 
     // resolver el caso posiblemente llamando a otras funciones
     lista.remove_if([edadMin, edadMax] (const Persona &p) {
-               return (p.getEdad() >= edadMin && p.getEdad() <= edadMax); 
+               return p.getEdad() < edadMin || p.getEdad() > edadMax; 
             });
 
     // escribir la solución
