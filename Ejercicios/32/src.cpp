@@ -184,18 +184,12 @@ template <typename T> BinTree<T> read_tree(std::istream &in) {
 //@ <answer>
 
 template<typename T>
-BinTree<T> reconstruir(const std::vector<T>& preorden, const std::vector<T>& inorden, const size_t ini, const size_t fin) {
-    if (iniPre == preorden.size()) {
-        return BinTree<T>;
-    }
-    else { 
-        return BinTree<T>(leftTree, preorden[ini], rightTree);
-    }
+BinTree<T> resolver() {
 }
 
 template<typename T>
 BinTree<T> reconstruir(const std::vector<T>& preorden, const std::vector<T>& inorden) {
-    return resolver(preorden, inorden, 0, preorden.size());
+    return resolver(preorden, inorden);
 }
 
 bool resuelveCaso() {
