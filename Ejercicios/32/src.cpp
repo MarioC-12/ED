@@ -200,8 +200,17 @@ bool resuelveCaso() {
     if (!std::cin)  // fin de la entrada
         return false;
 
-    std::vector<size_t> preorden (numNodos); 
+    std::queue<size_t> preorden (); 
+    size_t auxV;
+    for (size_t i = 0; i < numNodos; ++i) {
+        std::cin >> auxV;
+        preorden.push(auxV);
+    }
     std::vector<size_t> inorden (numNodos);
+    for (size_t i = 0; i < numNodos; ++i) {
+        std::cin >> auxV;
+        inorden[i] = auxV;
+    }
 
     // resolver el caso posiblemente llamando a otras funciones
     BinTree<size_t> sol = reconstruir(preorden, inorden);
