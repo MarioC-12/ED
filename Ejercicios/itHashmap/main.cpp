@@ -26,6 +26,9 @@ const int INITIAL_CAPACITY = 7;
 const double MAX_LOAD_FACTOR = 0.8;
 
 template <typename K, typename V, typename Hash = std::hash<K>> class MapHash {
+private: 
+    class iterator;
+
 public:
   struct MapEntry {
     K key;
@@ -150,6 +153,9 @@ public:
     out << " }";
   }
 
+  iterator begin() { return iterator(0, buckets[0].begin()); }
+  iterator end() { return iterator(capacity - 1, buckets[capacity - 1].end()); } 
+
 private:
   using List = std::forward_list<MapEntry>;
 
@@ -214,20 +220,36 @@ private:
     return it;
   }
   
-  template <typename U> 
   class iterator {
   public: 
     iterator &operator++() {
+    //Saltarse las vacías
+      assert(currentBucket < capacity);
+      ++itBucket;
+      if (itBucket == buckets[currentBucket].end()) {
+        ++currentBucket;
+        itBucket = buckets[currentBucket].begin();
+      }
+      return *this;
     }
 
-    iterator operator++() {
+    iterator operator++(int) {
+      assert(currentBucket < capacity);
+      iterator before = *this;
+      ++itBucket;
+      if (itBucket == buckets[currentBucket].end()) {
+          ++currentBucket;
+          itBucket = buckets[currentBucket].begin();
+      }
+      return before;
     }
 
-    U &operator*() const {
+    V &operator*() const {
+      return *itBucket;
     }
 
     bool operator==(const iterator &other) const {
-        return ;
+        return itBucket == other.itBucket;
     }
 
     bool operator!=(const iterator &other) const {
@@ -237,10 +259,9 @@ private:
     friend class MapHash;
 
   private: 
-    iterator(size_t currentBucket, List::iterator itBucket): currentBucket(currentBucket), itBucket(itBucket) {};
+    iterator(size_t currentBucket, auto itBucket): currentBucket(currentBucket), itBucket(itBucket) {};
     size_t currentBucket;
-    //Iterador de la lista de un bucket?
-    List::iterator itBucket;
+    auto itBucket;
   };
 };
 
@@ -272,8 +293,6 @@ int main() {
   personas["Marta"] = 22;
   personas["Andres"] = 18;
   
-  /* Cuando tengas iteradores, descomenta el resto del código.
-   
   for (auto [nombre, edad] : personas)
     cout << nombre << ' ' << edad << '\n';
   cout << "---\n";
@@ -286,14 +305,13 @@ int main() {
   for (auto [nombre, edad] : personas)
     cout << nombre << ' ' << edad << '\n';
   cout << "---\n";
-   */
 
   
   /* Descomenta también esta parte si tienes iteradores constantes.
    
   imprime(personas);
+  */ 
   
-  */
   
   return 0;
 }
