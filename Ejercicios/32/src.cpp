@@ -13,15 +13,7 @@
 #include <iterator>
 #include <memory>
 #include <queue>
-#include <stack>
-
-/*@ <answer>
-  
- Escribe aquí un comentario general sobre la solución, explicando cómo
- se resuelve el problema y cuál es el coste de la solución, en función
- del tamaño del problema.
- 
- @ </answer> */
+#include <algorithm>
 
 template <class T> class BinTree {
 
@@ -182,14 +174,28 @@ template <typename T> BinTree<T> read_tree(std::istream &in) {
 // Escribe el código completo de tu solución aquí debajo
 // ================================================================
 //@ <answer>
-
 template<typename T>
-BinTree<T> resolver() {
+BinTree<T> reconstruir_aux(std::queue<T>& preorden, const std::vector<T>& inorden, const size_t ini, const size_t fin) {
+    if (ini == fin) {
+        return {};
+    }
+    else {
+        T aux = preorden.front();
+        preorden.pop();
+
+        auto aux_it = std::find(inorden.begin(), inorden.end(), aux);
+        size_t pos = std::distance(inorden.begin(), aux_it);
+
+        BinTree<T> izq = reconstruir_aux(preorden, inorden, ini, pos);
+        BinTree<T> der = reconstruir_aux(preorden, inorden, pos + 1, fin);
+
+        return {izq, aux, der};
+    }
 }
 
 template<typename T>
-BinTree<T> reconstruir(const std::vector<T>& preorden, const std::vector<T>& inorden) {
-    return resolver(preorden, inorden);
+BinTree<T> reconstruir(std::queue<T>& preorden, const std::vector<T>& inorden) {
+    return reconstruir_aux(preorden, inorden, 0, inorden.size());
 }
 
 bool resuelveCaso() {
@@ -200,20 +206,20 @@ bool resuelveCaso() {
     if (!std::cin)  // fin de la entrada
         return false;
 
-    std::queue<size_t> preorden (); 
-    size_t auxV;
+    std::queue<int> preorden; 
+    int auxV;
     for (size_t i = 0; i < numNodos; ++i) {
         std::cin >> auxV;
         preorden.push(auxV);
     }
-    std::vector<size_t> inorden (numNodos);
+    std::vector<int> inorden (numNodos);
     for (size_t i = 0; i < numNodos; ++i) {
         std::cin >> auxV;
         inorden[i] = auxV;
     }
 
     // resolver el caso posiblemente llamando a otras funciones
-    BinTree<size_t> sol = reconstruir(preorden, inorden);
+    BinTree<int> sol = reconstruir(preorden, inorden);
 
     // escribir la solución
     std::cout << sol << '\n';
