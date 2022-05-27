@@ -19,6 +19,7 @@ using namespace std;
 
 class IPud {
 public: 
+    IPud (): _totalTime(0) {};
     void addSong(const string &song, const string &artista, const size_t &dur);
     void addToPlayList(const string &song);
     string current();
@@ -47,7 +48,7 @@ void IPud::addSong(const string &song, const string &artista, const size_t &dur)
 }
 
 void IPud::addToPlayList(const string &song) {
-    if(canciones.count(song)) {
+    if(!canciones.count(song)) {
         throw domain_error("addToPlayList");
     }
     if(!songItPlayList.count(song)) { 
@@ -131,7 +132,7 @@ bool resuelveCaso() {
                 cin >> song >> artista >> duracion;
                 dis.addSong(song, artista, duracion);
             }
-            else if(comando == "addToPlayList") {
+            else if(comando == "addToPlaylist") {
                 cin >> song;
                 dis.addToPlayList(song);
             }
@@ -161,7 +162,7 @@ bool resuelveCaso() {
                 else {
                     cout << "Las " << aux << " mas recientes\n";
                     for (const string &txt : sol) {
-                        cout << '\t' << txt << '\n';
+                        cout << "    " << txt << '\n';
                     }
                 }
             }
@@ -173,6 +174,7 @@ bool resuelveCaso() {
     }
 
     // escribir la solución
+    cout << "---\n";
 
     return true;
 }
